@@ -1,0 +1,6 @@
+PassengerEnabled On
+PassengerAppType wsgi
+PassengerStartupFile passenger_wsgi.py
+PassengerFriendlyErrorPages On
+Options -Indexes +FollowSymLinks
+Require all granted

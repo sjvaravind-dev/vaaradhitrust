@@ -1,0 +1,9 @@
+PassengerEnabled On
+PassengerAppType wsgi
+PassengerStartupFile passenger_wsgi.py
+PassengerFriendlyErrorPages On
+Options -Indexes +FollowSymLinks
+Require all granted
+
+# Rename this file to .htaccess inside the public/ folder on the server.
+# Keep any Hostinger auto-generated Passenger block above these lines.

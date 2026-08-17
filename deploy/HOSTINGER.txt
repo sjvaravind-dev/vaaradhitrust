@@ -1,0 +1,62 @@
+HOSTINGER PYTHON APP — VAARADHI TRUST
+=====================================
+
+This project = "django_app" in Hostinger docs.
+Django package name = config  (not myproject)
+
+Upload / clone this whole folder as the Python application root:
+
+  manage.py
+  passenger_wsgi.py
+  requirements.txt
+  .env
+  public/          <-- Hostinger "public" / document directory
+  config/
+  core/
+  api/
+  templates/
+  static/
+  media/
+
+------------------------------------------------------------------------------
+hPanel → Advanced → Python → Create application
+------------------------------------------------------------------------------
+  Application URL:    https://app.gayatritechsolutions.com
+  Application root:   folder that contains manage.py
+  Public directory:   public          (recommended)
+  Startup file:       public/passenger_wsgi.py   OR  passenger_wsgi.py
+  Application entry:  application
+  Python version:     3.10 or newer (3.12 if available)
+
+After saving, click RESTART on the Python app.
+
+Attach the SUBDOMAIN to this Python app.
+Do not point app.gayatritechsolutions.com at public_html of the main website.
+
+See deploy/HOSTINGER-FIX-403.txt if you get 403 Forbidden.
+
+------------------------------------------------------------------------------
+After the app is created, open Hostinger Terminal in that app and run:
+------------------------------------------------------------------------------
+  pip install -r requirements.txt
+  python manage.py setup_hosting
+
+Then open:
+  https://app.gayatritechsolutions.com/
+  https://app.gayatritechsolutions.com/admin/
+    user: admin
+    password: ChangeMeNow123   (change immediately)
+
+Never open:
+  https://app.gayatritechsolutions.com/manage.py
+  https://app.gayatritechsolutions.com/passenger_wsgi.py
+
+------------------------------------------------------------------------------
+When you move to vaaradhi.org.in
+------------------------------------------------------------------------------
+  1. Add the domain to the same Python app (or clone the app).
+  2. In .env set:
+       SITE_URL=https://vaaradhi.org.in
+  3. Restart the Python app.
+
+.env already allows .vaaradhi.org.in and .gayatritechsolutions.com
