@@ -1,0 +1,52 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.png' %}{% endif %}" alt="{{ site.org_name }}" class="footer-logo">
+      <p>{{ site.footer_about }}</p>
+      <div class="socials">
+        {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>{% endif %}
+        {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">ig</a>{% endif %}
+        {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">fb</a>{% endif %}
+        {% if site.youtube_url %}<a href="{{ site.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">yt</a>{% endif %}
+        {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener" aria-label="X">x</a>{% endif %}
+      </div>
+    </div>
+
+    <div>
+      <h3>About Us</h3>
+      <ul>
+        <li><a href="{% url 'our_story' %}">Our Story</a></li>
+        <li><a href="{% url 'vision_mission' %}">Vision &amp; Mission</a></li>
+        <li><a href="{% url 'team' %}">Team</a></li>
+        <li><a href="{% url 'governance' %}">Governance</a></li>
+        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Programs</h3>
+      <ul>
+        {% for p in nav_programs|slice:":6" %}
+          <li><a href="{% url 'program_detail' p.slug %}">{{ p.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div>
+      <h3>Contact</h3>
+      <ul class="footer-contact">
+        <li>{{ site.address }}</li>
+        <li><a href="tel:{{ site.phone }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+      </ul>
+      <a class="btn btn--outline-light" href="{% url 'donate' %}">Donate Now</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© {% now "Y" %} {{ site.org_name }}. All rights reserved.</p>
+      <p><a href="{% url 'privacy_policy' %}">Privacy &amp; Security</a></p>
+    </div>
+  </div>
+</footer>

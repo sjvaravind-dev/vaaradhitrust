@@ -1,0 +1,19 @@
+{% if scrolling_news %}
+<div class="news-ticker" role="region" aria-label="Latest updates">
+  <div class="news-ticker__label">Updates</div>
+  <div class="news-ticker__track-wrap">
+    <div class="news-ticker__track">
+      {% for item in scrolling_news %}
+        <span class="news-ticker__item">
+          {% if item.link %}<a href="{{ item.link }}">{{ item.text }}</a>{% else %}{{ item.text }}{% endif %}
+        </span>
+      {% endfor %}
+      {% for item in scrolling_news %}
+        <span class="news-ticker__item" aria-hidden="true">
+          {% if item.link %}<a href="{{ item.link }}" tabindex="-1">{{ item.text }}</a>{% else %}{{ item.text }}{% endif %}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}

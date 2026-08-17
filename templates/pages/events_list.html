@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Events</p>
+    <h1>Events</h1>
+    <p class="lead">Conclaves, regular gatherings, and community engagements.</p>
+    {% if linkedin_url %}
+      <a class="btn btn--primary" href="{{ linkedin_url }}" target="_blank" rel="noopener">Follow on LinkedIn</a>
+    {% endif %}
+  </div>
+</section>
+<section class="section">
+  <div class="container events-grid">
+    {% for event in events %}
+    <article class="event-card" data-animate>
+      <time>{% if event.event_date %}{{ event.event_date|date:"M d, Y" }}{% else %}Date TBA{% endif %}</time>
+      {% if event.event_type %}<span class="pill">{{ event.event_type }}</span>{% endif %}
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.summary|default:event.description|truncatewords:30 }}</p>
+      {% if event.external_url %}<a href="{{ event.external_url }}" target="_blank" rel="noopener">Open link →</a>{% endif %}
+    </article>
+    {% empty %}
+    <p>Event listings will appear here. Meanwhile, follow us on LinkedIn for live updates.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

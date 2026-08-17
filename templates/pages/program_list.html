@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Programs</p>
+    <h1>Our Programs</h1>
+    <p class="lead">Focus areas spanning skills, environment, health, education, and livelihoods.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container program-grid">
+    {% for p in programs %}
+    <a class="program-tile" href="{% url 'program_detail' p.slug %}" data-animate>
+      <h3>{{ p.title }}</h3>
+      <p>{{ p.short_description|truncatewords:26 }}</p>
+      <span>Explore →</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

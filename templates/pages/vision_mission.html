@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">About Us</p>
+    <h1>Vision &amp; Mission</h1>
+  </div>
+</section>
+<section class="section">
+  <div class="container vm-page">
+    <article class="vm-card" data-animate>
+      <h2>Our Vision</h2>
+      <p>{{ site.vision }}</p>
+    </article>
+    <article class="vm-card" data-animate>
+      <h2>Our Mission</h2>
+      <p>{{ site.mission }}</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

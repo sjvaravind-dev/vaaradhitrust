@@ -1,0 +1,68 @@
+{% load static %}
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="brand" href="{% url 'home' %}" aria-label="{{ site.org_name }} home">
+      {% if site.logo %}
+        <img src="{{ site.logo.url }}" alt="{{ site.org_name }}" class="brand__logo">
+      {% else %}
+        <img src="{% static 'img/logo.png' %}" alt="{{ site.org_name }}" class="brand__logo">
+      {% endif %}
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+      <ul class="nav-list">
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        <li class="has-mega">
+          <button type="button" class="nav-link-btn" aria-expanded="false">About Us</button>
+          <div class="mega">
+            <a href="{% url 'our_story' %}">Our Story</a>
+            <a href="{% url 'vision_mission' %}">Vision &amp; Mission</a>
+            <a href="{% url 'team' %}">Our Team</a>
+            <a href="{% url 'governance' %}">Governance</a>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'media_list' %}">Media &amp; News</a>
+          </div>
+        </li>
+
+        <li class="has-mega">
+          <button type="button" class="nav-link-btn" aria-expanded="false">Programs</button>
+          <div class="mega mega--wide">
+            {% for p in nav_programs %}
+              <a href="{% url 'program_detail' p.slug %}">{{ p.title }}</a>
+            {% empty %}
+              <a href="{% url 'program_list' %}">View all programs</a>
+            {% endfor %}
+            <a class="mega__all" href="{% url 'program_list' %}">All Programs →</a>
+          </div>
+        </li>
+
+        <li class="has-mega">
+          <button type="button" class="nav-link-btn" aria-expanded="false">Our Work</button>
+          <div class="mega">
+            <a href="{% url 'project_list' %}?status=active">Active Projects</a>
+            <a href="{% url 'project_list' %}?status=ongoing">Ongoing Projects</a>
+          </div>
+        </li>
+
+        <li><a href="{% url 'events_linkedin' %}" target="_blank" rel="noopener">Events</a></li>
+        <li><a href="{% url 'partners' %}">Partners</a></li>
+
+        <li class="has-mega">
+          <button type="button" class="nav-link-btn" aria-expanded="false">Join Us</button>
+          <div class="mega">
+            <a href="{% url 'careers' %}">Careers</a>
+            <a href="{% url 'volunteer' %}">Volunteer</a>
+            <a href="{% url 'csr' %}">CSR Partnership</a>
+          </div>
+        </li>
+      </ul>
+
+      <a class="btn btn--donate" href="{% url 'donate' %}">Donate Now</a>
+    </nav>
+  </div>
+</header>

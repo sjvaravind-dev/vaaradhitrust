@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Our Work</p>
+    <h1>{{ page_title }}</h1>
+    <div class="filter-tabs">
+      <a class="{% if status == 'active' %}is-active{% endif %}" href="?status=active">Active</a>
+      <a class="{% if status == 'ongoing' %}is-active{% endif %}" href="?status=ongoing">Ongoing</a>
+      <a class="{% if status == 'upcoming' %}is-active{% endif %}" href="?status=upcoming">Upcoming</a>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container project-grid">
+    {% for project in projects %}
+    <article class="project-card" data-animate>
+      <span class="pill">{{ project.category|default:project.get_status_display }}</span>
+      <h3><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
+      <p>{{ project.summary|truncatewords:28 }}</p>
+      {% if project.partner_name %}<small>In collaboration with {{ project.partner_name }}</small>{% endif %}
+    </article>
+    {% empty %}
+    <p>No projects in this category yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

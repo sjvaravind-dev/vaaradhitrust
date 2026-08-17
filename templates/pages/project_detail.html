@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">{{ project.get_status_display }} Project</p>
+    <h1>{{ project.title }}</h1>
+    {% if project.category %}<p class="lead">{{ project.category }}</p>{% endif %}
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if project.image %}<img class="content-hero-img" src="{{ project.image.url }}" alt="{{ project.title }}">{% endif %}
+    <p class="lead">{{ project.summary }}</p>
+    {% if project.description %}{{ project.description|linebreaks }}{% endif %}
+    {% if project.partner_name %}<p><strong>Partner:</strong> {{ project.partner_name }}</p>{% endif %}
+    <p><a href="{% url 'project_list' %}">← Back to projects</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Collaboration</p>
+    <h1>Our Partners</h1>
+    <p class="lead">Donors, NGOs, government stakeholders, and CSR collaborators.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container partner-page-grid">
+    {% for partner in partners %}
+    <article class="partner-card" data-animate>
+      <div class="partner-card__logo">
+        {% if partner.logo %}<img src="{{ partner.logo.url }}" alt="{{ partner.name }}">{% else %}<strong>{{ partner.name|truncatechars:18 }}</strong>{% endif %}
+      </div>
+      <h3>{{ partner.name }}</h3>
+      <span class="pill">{{ partner.get_partner_type_display }}</span>
+      {% if partner.brief %}<p>{{ partner.brief }}</p>{% endif %}
+      {% if partner.website %}<a href="{{ partner.website }}" target="_blank" rel="noopener">Visit website</a>{% endif %}
+    </article>
+    {% empty %}
+    <p>Partner profiles will be added as collaborations grow.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

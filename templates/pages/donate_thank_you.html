@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero page-hero--donate">
+  <div class="container">
+    <p class="eyebrow">VAARADHI TRUST · Donors</p>
+    <h1>Thank you</h1>
+    <p class="lead">Every donation makes a difference. Join us in creating healthier communities, empowering livelihoods, and building a sustainable future.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow">
+    <div class="empty-state" data-animate>
+      {% if donation %}
+        <h2>Your gift is received</h2>
+        <p>Thank you, {{ donation.name }}. ₹{{ donation.amount }} has been directed to <strong>{{ donation.cause_title }}</strong>{% if donation.donation_type == "monthly" %} as a monthly gift{% endif %}.</p>
+        <p>If you shared your PAN, you will receive an email receipt, followed by Form 10BE by 31 May of the following year for your Section 80G deduction.</p>
+      {% else %}
+        <h2>Thank you for supporting Vaaradhi Trust</h2>
+        <p>Your surplus is now a bridge — funding advocacy, awareness, accessibility, and long-term follow-through.</p>
+      {% endif %}
+      <a class="btn btn--donate" href="{% url 'donate' %}">Give again</a>
+      <a class="btn btn--ghost" href="{% url 'home' %}">Back to home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">About Us</p>
+    <h1>Governance</h1>
+    <p class="lead">Regulatory disclosures and institutional documents.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="doc-list">
+      {% for doc in documents %}
+      <article class="doc-item" data-animate>
+        <div>
+          <h3>{{ doc.title }}{% if doc.year %} <small>({{ doc.year }})</small>{% endif %}</h3>
+          {% if doc.description %}<p>{{ doc.description }}</p>{% endif %}
+        </div>
+        {% if doc.file %}
+          <a class="btn btn--sm" href="{{ doc.file.url }}" target="_blank" rel="noopener">Download</a>
+        {% elif doc.external_url %}
+          <a class="btn btn--sm" href="{{ doc.external_url }}" target="_blank" rel="noopener">View</a>
+        {% endif %}
+      </article>
+      {% empty %}
+      <p>Governance documents will be published as they become available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

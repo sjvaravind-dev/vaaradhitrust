@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Media</p>
+    <h1>{{ item.title }}</h1>
+    {% if item.published_at %}<p class="lead">{{ item.published_at|date:"F d, Y" }}</p>{% endif %}
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if item.image %}<img class="content-hero-img" src="{{ item.image.url }}" alt="{{ item.title }}">{% endif %}
+    {% if item.excerpt %}<p class="lead">{{ item.excerpt }}</p>{% endif %}
+    {{ item.body|linebreaks }}
+    {% if item.external_url %}
+      <p><a class="btn btn--ghost" href="{{ item.external_url }}" target="_blank" rel="noopener">External link</a></p>
+    {% endif %}
+    <p><a href="{% url 'media_list' %}">← Back to Media</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Join Us</p>
+    <h1>Volunteer With Us</h1>
+    <p class="lead">Bring your time and talent to community-driven change.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if site.volunteer_content %}
+      {{ site.volunteer_content|linebreaks }}
+    {% else %}
+      <p>Volunteers are the heartbeat of Vaaradhi Trust. Whether you can support field activities, awareness campaigns, documentation, design, or student engagement, there is a place for your skills.</p>
+      <h2>How you can help</h2>
+      <ul>
+        <li>Support skill-development cohorts and mobilisation drives</li>
+        <li>Assist urban forestry and community greening activities</li>
+        <li>Help with public-health awareness and generic medicine outreach</li>
+        <li>Contribute professional skills (legal, communications, tech, research)</li>
+      </ul>
+      <h2>Get started</h2>
+      <p>Write to us at <a href="mailto:{{ site.email }}">{{ site.email }}</a> with a short note on your interests and availability. Our team will guide you to a suitable opportunity.</p>
+    {% endif %}
+    <p><a class="btn btn--primary" href="mailto:{{ site.email }}?subject=Volunteer%20Interest">Express Interest</a></p>
+  </div>
+</section>
+{% endblock %}

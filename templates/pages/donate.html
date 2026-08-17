@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero page-hero--donate" style="--donate-hero: url('{% static 'img/donate-hero.png' %}')">
+  <div class="container">
+    <p class="eyebrow">VAARADHI TRUST · Donors</p>
+    <h1>Choose a Cause. Create an Impact.</h1>
+    <p class="lead">Every surplus put to work becomes a bridge that keeps carrying impact long after the donation is made.</p>
+  </div>
+</section>
+
+<section class="section donate-intro">
+  <div class="container donate-layout">
+    <div class="donate-story" data-animate>
+      <figure class="donate-story__media">
+        <img src="{% static 'img/donate-hero.png' %}" alt="Communities supported through Vaaradhi Trust donations">
+        <figcaption>
+          <span class="donate-story__badge">80G · Tax deductible</span>
+          <strong>Your surplus becomes someone’s foundation</strong>
+        </figcaption>
+      </figure>
+      <div class="donate-story__body">
+        <p class="eyebrow">VAARADHI TRUST · Donors</p>
+        <h2>Give with clarity. Fund lasting change.</h2>
+        <p>Every surplus — money, medicine, knowledge, or opportunity — can change a life once it reaches the person who needs it. Your contribution puts that surplus to work through community-led, sustainable programmes.</p>
+        <p>Direct your gift to a specific cause below, or allow Vaaradhi Trust to allocate it where it is needed most right now.</p>
+        <ul class="donate-trust">
+          <li>
+            <span class="donate-trust__icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>Section 80G eligible</strong>
+              <small>Instant receipt + Form 10BE by 31 May</small>
+            </div>
+          </li>
+          <li>
+            <span class="donate-trust__icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>PCI-compliant checkout</strong>
+              <small>UPI, Google Pay, PhonePe, cards &amp; net banking</small>
+            </div>
+          </li>
+          <li>
+            <span class="donate-trust__icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>Cause-level impact</strong>
+              <small>Trees, certified careers, family medicines &amp; more</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <aside class="donate-panel" id="donateFormPanel" data-animate>
+      <div class="donate-panel__head">
+        <h2>Make a Donation</h2>
+        <p>Secure Razorpay checkout · Min. ₹{{ donation_min_amount|default:100 }}</p>
+      </div>
+      <form
+        class="donate-form"
+        id="donateForm"
+        data-order-url="/api/v1/donations/orders/"
+        data-verify-url="/api/v1/donations/verify/"
+        data-min="{{ donation_min_amount|default:100 }}"
+        data-configured="{{ razorpay_configured|yesno:'true,false' }}"
+      >
+        {% csrf_token %}
+        <p class="donate-status" id="donateStatus" hidden></p>
+
+        <fieldset class="donate-fieldset">
+          <legend>Donation type</legend>
+          <div class="donate-seg" role="group" aria-label="Donation type">
+            <label class="donate-seg__item">
+              <input type="radio" name="donation_type" value="one-time" checked>
+              <span>One-time</span>
+            </label>
+            <label class="donate-seg__item">
+              <input type="radio" name="donation_type" value="monthly">
+              <span>Monthly</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label class="donate-field">
+          Choose a cause
+          <select name="cause" id="causeSelect" required>
+            <option value="">Select a cause</option>
+            <option value="wherever-needed">Wherever It's Needed Most</option>
+            {% for c in campaigns %}
+              <option value="{{ c.slug }}" {% if selected_cause == c.slug %}selected{% endif %}>{{ c.title }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <div class="donate-field">
+          <span class="donate-field__label">Amount</span>
+          <div class="donate-amount">
+            <span class="donate-amount__prefix">₹</span>
+            <input type="number" name="amount" id="donateAmount" min="{{ donation_min_amount|default:100 }}" step="1" value="500" required>
+          </div>
+          <div class="amount-chips" role="group" aria-label="Quick amounts">
+            <button type="button" data-amount="100">₹100</button>
+            <button type="button" data-amount="500" class="is-active">₹500</button>
+            <button type="button" data-amount="1000">₹1,000</button>
+            <button type="button" data-amount="5000">₹5,000</button>
+          </div>
+        </div>
+
+        <fieldset class="donate-fieldset">
+          <legend>Payment method</legend>
+          <div class="pay-methods" role="radiogroup" aria-label="Payment method">
+            <label class="pay-method">
+              <input type="radio" name="payment_method" value="upi" checked>
+              <span class="pay-method__card">
+                <span class="pay-method__icon pay-method__icon--upi" aria-hidden="true">UPI</span>
+                <span class="pay-method__name">UPI</span>
+              </span>
+            </label>
+            <label class="pay-method">
+              <input type="radio" name="payment_method" value="google_pay">
+              <span class="pay-method__card">
+                <span class="pay-method__icon pay-method__icon--gpay" aria-hidden="true">G</span>
+                <span class="pay-method__name">Google Pay</span>
+              </span>
+            </label>
+            <label class="pay-method">
+              <input type="radio" name="payment_method" value="phonepe">
+              <span class="pay-method__card">
+                <span class="pay-method__icon pay-method__icon--phonepe" aria-hidden="true">Pe</span>
+                <span class="pay-method__name">PhonePe</span>
+              </span>
+            </label>
+            <label class="pay-method">
+              <input type="radio" name="payment_method" value="card">
+              <span class="pay-method__card">
+                <span class="pay-method__icon pay-method__icon--card" aria-hidden="true">💳</span>
+                <span class="pay-method__name">Card</span>
+              </span>
+            </label>
+            <label class="pay-method">
+              <input type="radio" name="payment_method" value="netbanking">
+              <span class="pay-method__card">
+                <span class="pay-method__icon pay-method__icon--bank" aria-hidden="true">🏦</span>
+                <span class="pay-method__name">Net Banking</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="donate-grid-2">
+          <label class="donate-field">
+            Full name
+            <input type="text" name="name" required placeholder="Donor full name" autocomplete="name">
+          </label>
+          <label class="donate-field">
+            Email
+            <input type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+          </label>
+          <label class="donate-field">
+            Phone
+            <input type="tel" name="phone" placeholder="+91 98765 43210" autocomplete="tel">
+          </label>
+          <label class="donate-field">
+            PAN <small>(for 80G)</small>
+            <input type="text" name="pan" placeholder="ABCDE1234F" maxlength="10" autocomplete="off">
+          </label>
+        </div>
+
+        <label class="check-row">
+          <input type="checkbox" name="updates" value="yes">
+          Send me updates on the cause I support
+        </label>
+
+        <button type="submit" class="btn btn--donate btn--block" id="donateSubmit">
+          Proceed to Secure Payment
+        </button>
+        <p class="form-note">
+          You will complete payment on Razorpay’s secure page using your selected method.
+          Keys can be added later in <code>.env</code> (<code>RAZORPAY_KEY_ID</code> / <code>RAZORPAY_KEY_SECRET</code>).
+        </p>
+      </form>
+    </aside>
+  </div>
+</section>
+
+<section class="section why-matters">
+  <div class="container">
+    <div class="section-head">
+      <h2>Why Your Contribution Matters</h2>
+      <p>Vaaradhi Trust exists to close the distance between abundance and need.</p>
+    </div>
+    <div class="why-grid">
+      <article class="why-card" data-animate>
+        <img src="{% static 'img/causes/forestry.png' %}" alt="Urban forestry impact">
+        <h3>A mature tree</h3>
+        <p>Your gift can grow into a tree adopted and cared for over three years.</p>
+      </article>
+      <article class="why-card" data-animate>
+        <img src="{% static 'img/causes/skills.png' %}" alt="Skill development impact">
+        <h3>A certified career</h3>
+        <p>It can fund a training seat that ends in dignified, certified employment.</p>
+      </article>
+      <article class="why-card" data-animate>
+        <img src="{% static 'img/causes/health.png' %}" alt="Generic medicines impact">
+        <h3>A family's medicines</h3>
+        <p>Or support a family's monthly access to affordable generic medicines.</p>
+      </article>
+    </div>
+    <p class="why-closing" data-animate>A donation to any of these causes doesn't just fund an activity, it funds the bridge itself — the advocacy, the awareness, the accessibility, and the long-term follow-through that turns a single contribution into years of impact. Whether it grows into a mature tree, a certified career, or a family's monthly medicine, your surplus becomes someone else's foundation.</p>
+  </div>
+</section>
+
+<section class="section causes-section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Choose Your Cause</h2>
+      <p>Seven focused causes — or let us allocate where it's needed most.</p>
+    </div>
+    <div class="campaign-grid">
+      {% for c in campaigns %}
+      <article class="cause-card" data-animate id="cause-{{ c.slug }}">
+        <div class="cause-card__visual" style="background-image:url('{% if c.image %}{{ c.image.url }}{% else %}{% static 'img/causes/general.png' %}{% endif %}')"></div>
+        <div class="cause-card__body">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.summary }}</p>
+          <div class="cause-card__actions">
+            <a href="#donateFormPanel" class="btn btn--sm js-select-cause" data-cause="{{ c.slug }}">Donate to this cause</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+      <article class="cause-card cause-card--general" data-animate>
+        <div class="cause-card__visual" style="background-image:url('{% static 'img/causes/general.png' %}')"></div>
+        <div class="cause-card__body">
+          <h3>Wherever It's Needed Most</h3>
+          <p>Allow Vaaradhi Trust to allocate your gift to the areas of greatest need right now — with transparent progress updates if you opt in.</p>
+          <div class="cause-card__actions">
+            <a href="#donateFormPanel" class="btn btn--sm js-select-cause" data-cause="wherever-needed">Give flexibly</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section faq-section">
+  <div class="container narrow">
+    <div class="section-head">
+      <h2>Donor FAQs</h2>
+      <p>Clear answers before you give.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open data-animate>
+        <summary>What causes can I support?</summary>
+        <p>Seven causes in all: Urban Forestry and Climate Action, Skill Development and Employment Generation, the Generics for All Initiative, Plastic Waste Management, Farmer Producer Organizations, Education and Financial Aid, and Legal Awareness and Civic Engagement. You can direct your gift to any one of them, or let us allocate it where it's needed most.</p>
+      </details>
+      <details class="faq-item" data-animate>
+        <summary>What does my donation actually fund?</summary>
+        <p>It funds real, specific outcomes — a tree adopted and cared for over three years, a training seat that ends in a certified job, or a family's monthly generic medicines. Nothing sits in a general pool unless you choose "Wherever It's Needed Most," and if you opt in, we'll show you exactly how your chosen cause is progressing.</p>
+      </details>
+      <details class="faq-item" data-animate>
+        <summary>Do I get an 80G tax benefit?</summary>
+        <p>Donations qualify for a deduction under Section 80G. Share your PAN when you donate, and you'll get an instant email receipt right away, followed by Form 10BE — the certificate the Income Tax Department requires — by 31 May of the following year.</p>
+      </details>
+      <details class="faq-item" data-animate>
+        <summary>Is there a minimum donation amount?</summary>
+        <p>For online donations, we request a minimum of Rs 100 to help cover payment processing and documentation costs. There's no upper limit, and larger or recurring gifts can be discussed directly with our team.</p>
+      </details>
+      <details class="faq-item" data-animate>
+        <summary>Is online payment secure?</summary>
+        <p>Yes. Every transaction runs through a secure, PCI compliant payment gateway supporting UPI, Google Pay, PhonePe, cards, and net banking. Your details are used only to process your donation and, if you opt in, to send you updates on the cause you supported.</p>
+      </details>
+      <details class="faq-item" data-animate>
+        <summary>Can I give monthly?</summary>
+        <p>Yes. Select Monthly under type of donation, and your chosen amount is contributed automatically each month to your selected cause, until you choose to stop. Monthly giving is what lets us commit to multi-year work like our three-year tree adoption model.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section donate-closing">
+  <div class="container narrow center-text" data-animate>
+    <blockquote class="donate-quote">
+      <p>“Every donation makes a difference. Join us in creating healthier communities, empowering livelihoods, and building a sustainable future.”</p>
+    </blockquote>
+    <a class="btn btn--donate" href="#donateFormPanel">Donate Now</a>
+    <p class="muted" style="margin-top:1rem">Questions? Call <a href="tel:{{ site.phone }}">{{ site.phone }}</a> or email <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="{% static 'js/donate.js' %}"></script>
+{% endblock %}

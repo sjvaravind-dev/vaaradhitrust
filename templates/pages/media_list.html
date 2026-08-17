@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Media</p>
+    <h1>Media &amp; News</h1>
+    <p class="lead">Latest updates from meetings, field visits, and partnerships.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container media-grid">
+    {% for item in items %}
+    <article class="media-card" data-animate>
+      <a href="{% url 'media_detail' item.slug %}" class="media-card__img" {% if item.image %}style="background-image:url('{{ item.image.url }}')"{% endif %}></a>
+      <div class="media-card__body">
+        {% if item.published_at %}<time>{{ item.published_at|date:"M d, Y" }}</time>{% endif %}
+        <h2><a href="{% url 'media_detail' item.slug %}">{{ item.title }}</a></h2>
+        <p>{{ item.excerpt|truncatewords:28 }}</p>
+        <a href="{% url 'media_detail' item.slug %}">Read more →</a>
+      </div>
+    </article>
+    {% empty %}
+    <p>News updates will appear here.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

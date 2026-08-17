@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="home-stage">
+  <section class="hero-slider" id="heroSlider" aria-label="Featured themes">
+    {% for slide in sliders %}
+    <article class="hero-slide {% if forloop.first %}is-active{% endif %}" data-theme="{{ slide.theme }}">
+      <div class="hero-slide__media">
+        {% if slide.background_image %}
+          <img class="hero-slide__img" src="{{ slide.background_image.url }}" alt="" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+        {% endif %}
+        <div class="hero-slide__shade"></div>
+      </div>
+      <div class="container hero-slide__layout">
+        <div class="hero-slide__content">
+          <div class="hero-slide__meta">
+            <p class="eyebrow">{{ slide.get_theme_display }}</p>
+            {% if sliders|length > 1 %}
+            <span class="hero-slide__index"><span class="hero-slide__index-current">{{ forloop.counter|stringformat:"02d" }}</span> / {{ sliders|length|stringformat:"02d" }}</span>
+            {% endif %}
+          </div>
+          <h1>{{ slide.title }}</h1>
+          {% if slide.subtitle %}<p class="lead">{{ slide.subtitle }}</p>{% endif %}
+          {% if slide.cta_link %}
+            <a class="btn btn--hero" href="{{ slide.cta_link }}">{{ slide.cta_text|default:"Explore" }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% empty %}
+    <article class="hero-slide is-active" data-theme="youth">
+      <div class="hero-slide__media">
+        <img class="hero-slide__img" src="{% static 'img/who-we-are.png' %}" alt="" loading="eager">
+        <div class="hero-slide__shade"></div>
+      </div>
+      <div class="container hero-slide__layout">
+        <div class="hero-slide__content">
+          <div class="hero-slide__meta">
+            <p class="eyebrow">Vaaradhi Trust</p>
+          </div>
+          <h1>Bridging Communities With Care</h1>
+          <p class="lead">High-impact programmes in skills, urban forestry, and public health.</p>
+          <a class="btn btn--hero" href="{% url 'donate' %}">Donate Now</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+    {% if sliders|length > 1 %}
+    <div class="hero-progress" aria-hidden="true"><span class="hero-progress__bar" id="heroProgress"></span></div>
+    <div class="hero-controls">
+      <button type="button" class="hero-prev" aria-label="Previous slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="hero-dots" id="heroDots"></div>
+      <button type="button" class="hero-next" aria-label="Next slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="impact-band" aria-labelledby="impactHeading">
+    <div class="container impact-band__row">
+      <header class="impact-head">
+        <span class="impact-head__badge">Our Impact</span>
+        <h2 id="impactHeading">Communities we reach</h2>
+      </header>
+      <div class="impact-grid">
+        {% for stat in impact_stats %}
+        <article class="impact-stat impact-stat--{% cycle 'green' 'brown' 'orange' 'forest' %}" data-animate>
+          <div class="impact-stat__icon-wrap">
+            {% if stat.icon and stat.icon != "impact" %}
+              {% include "partials/impact_icon.html" with icon=stat.icon %}
+            {% elif forloop.counter == 1 %}
+              {% include "partials/impact_icon.html" with icon="location" %}
+            {% elif forloop.counter == 2 %}
+              {% include "partials/impact_icon.html" with icon="areas" %}
+            {% elif forloop.counter == 3 %}
+              {% include "partials/impact_icon.html" with icon="projects" %}
+            {% else %}
+              {% include "partials/impact_icon.html" with icon="people" %}
+            {% endif %}
+          </div>
+          <span class="impact-value" data-count="{{ stat.value }}">0</span>
+          <span class="impact-label">{{ stat.label }}</span>
+        </article>
+        {% empty %}
+        <article class="impact-stat impact-stat--green" data-animate>
+          <div class="impact-stat__icon-wrap">{% include "partials/impact_icon.html" with icon="location" %}</div>
+          <span class="impact-value" data-count="1">0</span>
+          <span class="impact-label">Telangana</span>
+        </article>
+        <article class="impact-stat impact-stat--brown" data-animate>
+          <div class="impact-stat__icon-wrap">{% include "partials/impact_icon.html" with icon="areas" %}</div>
+          <span class="impact-value" data-count="7">0</span>
+          <span class="impact-label">Key Areas</span>
+        </article>
+        <article class="impact-stat impact-stat--orange" data-animate>
+          <div class="impact-stat__icon-wrap">{% include "partials/impact_icon.html" with icon="projects" %}</div>
+          <span class="impact-value" data-count="5">0</span>
+          <span class="impact-label">Active Projects</span>
+        </article>
+        <article class="impact-stat impact-stat--forest" data-animate>
+          <div class="impact-stat__icon-wrap">{% include "partials/impact_icon.html" with icon="people" %}</div>
+          <span class="impact-value" data-count="15100+">0</span>
+          <span class="impact-label">Beneficiaries Impacted</span>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="who-section section">
+  <div class="container who-grid">
+    <div class="who-media" data-animate>
+      {% if site.who_we_are_media %}
+        {% if site.who_we_are_media_is_video %}
+          <video controls playsinline poster="{% static 'img/who-poster.svg' %}">
+            <source src="{{ site.who_we_are_media.url }}">
+          </video>
+        {% else %}
+          <img src="{{ site.who_we_are_media.url }}" alt="Vaaradhi Trust community work">
+        {% endif %}
+      {% else %}
+        <img src="{% static 'img/who-we-are.png' %}" alt="Vaaradhi Trust bridging communities with care">
+      {% endif %}
+    </div>
+    <div class="who-copy" data-animate>
+      <p class="eyebrow">About Vaaradhi</p>
+      <h2>{{ site.who_we_are_title }}</h2>
+      <p>{{ site.who_we_are_text }}</p>
+      <div class="vm-mini">
+        <div>
+          <h3>Vision</h3>
+          <p>{{ site.vision }}</p>
+        </div>
+        <div>
+          <h3>Mission</h3>
+          <p>{{ site.mission }}</p>
+        </div>
+      </div>
+      <a class="btn btn--ghost" href="{% url 'our_story' %}">Read Our Story</a>
+    </div>
+  </div>
+</section>
+
+<section class="initiatives section section--initiatives">
+  <div class="container">
+    <header class="section-head section-head--center">
+      <span class="section-badge">Our Work</span>
+      <h2>Our Initiatives for Change</h2>
+      <p>Focused interventions creating pathways for dignity, opportunity, and resilience.</p>
+    </header>
+    <div class="initiatives-grid" id="initiativeRail">
+      {% for item in initiatives %}
+      <article class="initiative-card" data-animate>
+        <div class="initiative-card__visual" {% if item.image %}style="background-image:url('{{ item.image.url }}')"{% else %}style="background-image:url('{% static 'img/causes/general.png' %}')"{% endif %}>
+          <span class="initiative-card__num">{{ forloop.counter|stringformat:"02d" }}</span>
+        </div>
+        <div class="initiative-card__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.short_description|truncatewords:22 }}</p>
+          <div class="initiative-card__actions">
+            <a class="initiative-card__link" href="{% url 'initiative_detail' item.slug %}">Learn more →</a>
+            <a class="btn btn--sm btn--donate" href="{{ item.donate_link|default:'/donate/' }}">Donate</a>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-inline">Initiatives will appear here soon.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="be-change section section--change">
+  <div class="container">
+    <header class="section-head section-head--center section-head--light">
+      <span class="section-badge section-badge--light">Join Us</span>
+      <h2>Be the Change</h2>
+      <p>Help our beneficiaries by donating or volunteering for the causes you connect with most.</p>
+    </header>
+    <div class="change-grid">
+      <a class="change-card change-card--donate" href="{% url 'donate' %}" data-animate>
+        <div class="change-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21c4.418-4.418 7-7.582 7-11a7 7 0 1 0-14 0c0 3.418 2.582 6.582 7 11Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <h3>Donate for a cause</h3>
+        <p>Support skill development, urban forestry, and public health campaigns.</p>
+        <span class="change-card__cta">Donate now →</span>
+      </a>
+      <a class="change-card change-card--volunteer" href="{% url 'volunteer' %}" data-animate>
+        <div class="change-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="17" cy="9" r="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 19c.3-2.2 1.8-3.5 4-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Volunteer with us</h3>
+        <p>Join field activities, awareness drives, and community programmes.</p>
+        <span class="change-card__cta">Volunteer →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="events-home section section--events">
+  <div class="container">
+    <header class="section-head section-head--row">
+      <div>
+        <span class="section-badge">Events</span>
+        <h2>Latest gatherings &amp; engagements</h2>
+        <p>Follow our conclaves, field activities, and community programmes.</p>
+      </div>
+      <a class="btn btn--ghost" href="{% url 'events_linkedin' %}" target="_blank" rel="noopener">View on LinkedIn →</a>
+    </header>
+    <div class="events-grid">
+      {% for event in events %}
+      <article class="event-card" data-animate>
+        <div class="event-card__date">
+          {% if event.event_date %}
+          <span class="event-card__day">{{ event.event_date|date:"d" }}</span>
+          <span class="event-card__month">{{ event.event_date|date:"M Y" }}</span>
+          {% else %}
+          <span class="event-card__day">—</span>
+          <span class="event-card__month">Upcoming</span>
+          {% endif %}
+        </div>
+        <div class="event-card__body">
+          {% if event.event_type %}<span class="pill pill--event">{{ event.event_type }}</span>{% endif %}
+          <h3>{{ event.title }}</h3>
+          <p>{{ event.summary|truncatewords:24 }}</p>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-inline">Check our LinkedIn page for the latest event updates.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="partners-home section section--partners">
+  <div class="container">
+    <header class="section-head section-head--center">
+      <span class="section-badge">Our Trusted Partners</span>
+      <h2>Collaborating for lasting impact</h2>
+      <p>Donors, institutions, and collaborators strengthening every initiative.</p>
+    </header>
+  </div>
+  {% if partners %}
+  <div class="partner-marquee" aria-label="Partner logos">
+    <div class="partner-marquee__track">
+      {% for partner in partners %}
+      <div class="partner-marquee__item" title="{{ partner.name }}">
+        {% if partner.logo %}
+          <img src="{{ partner.logo.url }}" alt="{{ partner.name }}">
+        {% else %}
+          <span class="partner-marquee__name">{{ partner.name }}</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% for partner in partners %}
+      <div class="partner-marquee__item" title="{{ partner.name }}" aria-hidden="true">
+        {% if partner.logo %}
+          <img src="{{ partner.logo.url }}" alt="">
+        {% else %}
+          <span class="partner-marquee__name">{{ partner.name }}</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="container"><p class="empty-inline">Partner logos will be listed here.</p></div>
+  {% endif %}
+  <div class="container center-cta">
+    <a class="btn btn--ghost" href="{% url 'partners' %}">Meet all partners</a>
+  </div>
+</section>
+
+<section class="testimonials section section--testimonials">
+  <div class="container">
+    <header class="section-head section-head--center">
+      <span class="section-badge">Testimonials</span>
+      <h2>Voices from the community</h2>
+      <p>Stories from beneficiaries, donors, and stakeholders who walk this journey with us.</p>
+    </header>
+    <div class="testimonial-grid" id="testimonialRail">
+      {% for t in testimonials %}
+      <blockquote class="quote-card" data-animate>
+        <span class="quote-card__mark" aria-hidden="true">“</span>
+        <span class="pill pill--event">{{ t.get_role_type_display }}</span>
+        <p>{{ t.quote }}</p>
+        <footer class="quote-card__person">
+          {% if t.photo %}
+            <img src="{{ t.photo.url }}" alt="">
+          {% else %}
+            <span class="quote-card__avatar">{{ t.name|slice:":1" }}</span>
+          {% endif %}
+          <div>
+            <strong>{{ t.name }}</strong>
+            {% if t.role_label %}<small>{{ t.role_label }}</small>{% endif %}
+          </div>
+        </footer>
+      </blockquote>
+      {% empty %}
+      <p class="empty-inline">Testimonials coming soon.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="programs-strip section section--focus">
+  <div class="container">
+    <header class="section-head section-head--center">
+      <span class="section-badge">Focus Areas</span>
+      <h2>Where our work takes root</h2>
+      <p>Objectives guiding our community and environmental programmes.</p>
+    </header>
+    <div class="focus-grid">
+      {% for p in programs %}
+      <a class="focus-card" href="{% url 'program_detail' p.slug %}" data-animate>
+        <span class="focus-card__num">{{ forloop.counter|stringformat:"02d" }}</span>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.short_description|truncatewords:18 }}</p>
+        <span class="focus-card__link">Read more →</span>
+      </a>
+      {% empty %}
+      <p class="empty-inline">Focus areas will appear here soon.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

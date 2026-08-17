@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero page-hero--story">
+  <div class="container">
+    <p class="eyebrow">About Us</p>
+    <h1>Our Story</h1>
+  </div>
+</section>
+
+<section class="section story-section">
+  <div class="container narrow">
+    <blockquote class="story-quote" data-animate>
+      <p>“{{ site.story_quote }}”</p>
+      <cite>— {{ site.story_quote_author }}</cite>
+    </blockquote>
+
+    <article class="prose" data-animate>
+      <h2>Our Story (Who We Are)</h2>
+      {% if site.story_body %}
+        {{ site.story_body|linebreaks }}
+      {% else %}
+        <p>Vaaradhi Trust was founded on a simple, timeless belief: that surplus, when guided by purpose, can create lasting social good. It is a philosophy articulated most profoundly by Mahatma Gandhi and one that remains deeply relevant today. There is often enough knowledge to be shared, medicines to be accessed, expertise to be applied, and opportunities to be created. The challenge has rarely been the absence of resources; it has been the gap between what is available and those who need it most. This idea of connecting surplus with unmet need became the foundation of Vaaradhi Trust.</p>
+        <p>Established in September 2025 in Hyderabad by Mr. Subbarao Kattamuri, Vaaradhi Trust reflects this philosophy in action. Inspired by the belief that success finds its highest purpose when it creates opportunities for others, Mr. Kattamuri chose to dedicate his knowledge, experience, and resources to serving society in a purposeful and enduring way. Through Vaaradhi Trust, that vision has evolved into a platform that bridges critical gaps and creates sustainable pathways for individuals and communities to thrive.</p>
+        <p>Today, Vaaradhi Trust is a not-for-profit organization committed to designing and implementing high-impact social, environmental, and community-driven initiatives. By fostering meaningful partnerships with government institutions, corporate organizations, academic institutions, and civil society organizations, the Trust brings together diverse expertise and resources to address real-world challenges with sustainable solutions.</p>
+        <p>With its headquarters in Hyderabad, Vaaradhi Trust is dedicated to empowering underserved communities through focused interventions in various objectives identified. Its objectives span multiple focus areas, including Skill Development, Urban Forestry, Public Health, Education, Legal Awareness &amp; Civic Engagement, Plastic Waste Management, and Strengthening Farmer Producer Organizations (FPOs). Some of the initiatives currently under active intervention are skill development, urban forestry, and public health. Every initiative is guided by a belief that lasting social change is built through collaboration, innovation, and compassion — creating pathways that enable individuals and communities not merely to survive, but to thrive with dignity and hope.</p>
+      {% endif %}
+    </article>
+
+    <div class="center-cta">
+      <a class="btn btn--primary" href="{% url 'donate' %}">Support Our Work</a>
+      <a class="btn btn--ghost" href="{% url 'vision_mission' %}">Vision &amp; Mission</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

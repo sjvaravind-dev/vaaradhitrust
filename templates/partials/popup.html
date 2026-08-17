@@ -1,0 +1,20 @@
+{% if popup_banner %}
+<div class="popup-overlay" id="sitePopup" hidden data-popup-id="{{ popup_banner.id }}">
+  <div class="popup-dialog" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <button type="button" class="popup-close" id="popupClose" aria-label="Close">&times;</button>
+    <h2 id="popupTitle" class="visually-hidden">{{ popup_banner.title }}</h2>
+    <div class="popup-frame">
+      {% if popup_banner.link %}
+        <a href="{{ popup_banner.link }}" class="popup-image-link">
+          <img src="{{ popup_banner.image.url }}" alt="{{ popup_banner.title }}" class="popup-image" width="700" height="400">
+        </a>
+      {% else %}
+        <img src="{{ popup_banner.image.url }}" alt="{{ popup_banner.title }}" class="popup-image" width="700" height="400">
+      {% endif %}
+    </div>
+    {% if popup_banner.button_text and popup_banner.link %}
+      <a class="btn btn--donate popup-cta" href="{{ popup_banner.link }}">{{ popup_banner.button_text }}</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}

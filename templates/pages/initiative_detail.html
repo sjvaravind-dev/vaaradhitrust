@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Initiative</p>
+    <h1>{{ initiative.title }}</h1>
+    <p class="lead">{{ initiative.short_description }}</p>
+    <a class="btn btn--donate" href="{{ initiative.donate_link|default:'/donate/' }}">Donate</a>
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if initiative.image %}<img class="content-hero-img" src="{{ initiative.image.url }}" alt="{{ initiative.title }}">{% endif %}
+    {% if initiative.description %}{{ initiative.description|linebreaks }}{% else %}<p>{{ initiative.short_description }}</p>{% endif %}
+  </div>
+</section>
+{% endblock %}

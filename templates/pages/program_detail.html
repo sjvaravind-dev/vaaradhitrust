@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Program</p>
+    <h1>{{ program.title }}</h1>
+    <p class="lead">{{ program.short_description }}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if program.image %}<img class="content-hero-img" src="{{ program.image.url }}" alt="{{ program.title }}">{% endif %}
+    {% if program.description %}{{ program.description|linebreaks }}{% endif %}
+  </div>
+  {% if projects %}
+  <div class="container" style="margin-top:2.5rem">
+    <h2 class="group-title">Related Projects</h2>
+    <div class="project-grid">
+      {% for project in projects %}
+      <article class="project-card" data-animate>
+        <span class="pill">{{ project.category|default:project.get_status_display }}</span>
+        <h3><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
+        <p>{{ project.summary|truncatewords:22 }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
