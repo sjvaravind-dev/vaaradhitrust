@@ -1,0 +1,13 @@
+Django>=5.0,<7.0
+djangorestframework>=3.15
+django-cors-headers>=4.3
+django-filter>=24.0
+Pillow>=10.0
+whitenoise>=6.6
+gunicorn>=22.0
+redis>=5.0
+django-redis>=5.4
+python-dotenv>=1.0
+razorpay>=1.4
+# Uncomment if you switch to Hostinger MySQL:
+# mysqlclient>=2.2

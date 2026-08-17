@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Join Us</p>
+    <h1>CSR Partnership Facilitation</h1>
+    <p class="lead">Co-create high-impact programmes with measurable community outcomes.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container narrow prose">
+    {% if site.csr_content %}
+      {{ site.csr_content|linebreaks }}
+    {% else %}
+      <p>Vaaradhi Trust partners with corporates to design and implement CSR initiatives aligned with skill development, urban forestry &amp; climate action, public health, education, and community livelihoods.</p>
+      <h2>What we offer</h2>
+      <ul>
+        <li>Need assessment and programme design</li>
+        <li>On-ground implementation with local institutions</li>
+        <li>Transparent reporting and impact documentation</li>
+        <li>Multi-stakeholder facilitation with government and civil society</li>
+      </ul>
+      <p>To explore a CSR partnership, contact <a href="mailto:{{ site.email }}">{{ site.email }}</a> or call {{ site.phone }}.</p>
+    {% endif %}
+    <p><a class="btn btn--primary" href="mailto:{{ site.email }}?subject=CSR%20Partnership">Start a Conversation</a></p>
+  </div>
+</section>
+{% endblock %}

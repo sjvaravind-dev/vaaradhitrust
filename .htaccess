@@ -1,0 +1,24 @@
+# Vaaradhi Trust — Hostinger / LiteSpeed Passenger
+# Use when the subdomain document root = this folder (manage.py is here).
+
+PassengerEnabled On
+PassengerAppType wsgi
+PassengerStartupFile passenger_wsgi.py
+PassengerFriendlyErrorPages On
+
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+</IfModule>
+
+# Block direct download of secrets (does not block Passenger)
+<Files ".env">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</Files>

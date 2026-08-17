@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Join Us</p>
+    <h1>Careers</h1>
+    <p class="lead">Build a career that creates impact. Vacancies are listed as they open.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="doc-list">
+      {% for job in vacancies %}
+      <article class="doc-item" data-animate>
+        <div>
+          <h3>{{ job.title }}</h3>
+          <p>{{ job.summary }}</p>
+          <small>{{ job.location }} · {{ job.employment_type }}{% if job.posted_at %} · Posted {{ job.posted_at|date:"M d, Y" }}{% endif %}</small>
+          {% if job.description %}<div class="prose" style="margin-top:0.75rem">{{ job.description|linebreaks }}</div>{% endif %}
+        </div>
+        {% if job.apply_url %}
+          <a class="btn btn--sm" href="{{ job.apply_url }}" target="_blank" rel="noopener">Apply</a>
+        {% else %}
+          <a class="btn btn--sm" href="mailto:{{ job.apply_email }}?subject=Application: {{ job.title|urlencode }}">Apply</a>
+        {% endif %}
+      </article>
+      {% empty %}
+      <div class="empty-state">
+        <h3>No open vacancies right now</h3>
+        <p>Please check back soon, or share your profile at <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
